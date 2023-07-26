@@ -1,0 +1,84 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+button {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.main {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  min-height: calc(100vh - 39px);
+}
+
+.nav {
+  border: 1px solid black;
+  padding: 15px;
+}
+
+.default-projects {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-projects {
+  display: flex;
+  flex-direction: column;
+}
+
+.projects-title {
+  margin: 15px 0px;
+}
+
+.default-list {
+  text-align: left;
+}
+
+.custom-project {
+  text-align: left;
+}
+
+.content {
+  border: 1px solid black;
+  padding: 20px;
+}
+
+.title-name {
+  margin-bottom: 15px;
+}
+
+.input-popup {
+  margin-bottom: 15px;
+}
+
+.tasks-list {
+  margin-bottom: 15px;
+}
+
+.fa-circle {
+  width: 20px;
+  height: 20px;
+}
+
+.fa-xmark {
+  width: 20px;
+  height: 20px;
+}
+
+.list-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.task-content {
+  width: 80%;
+}
