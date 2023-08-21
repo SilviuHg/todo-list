@@ -82,3 +82,7 @@ button {
 .task-content {
   width: 80%;
 }
+
+.strike {
+  text-decoration: line-through;
+}

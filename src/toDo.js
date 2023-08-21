@@ -15,8 +15,6 @@ const addToDo = function (description) {
 };
 
 const getTodoDescription = (index) => {
-  //console.log(toDoArray[index].description);
-
   return toDoArray[index].description;
 };
 
@@ -35,11 +33,22 @@ const changeTodoDate = (index, date) => {
   console.log(toDoArray);
 };
 
+const checkStatus = (index) => {
+  if (toDoArray[index].checklist == false) {
+    toDoArray[index].checklist = true;
+    console.log(toDoArray);
+  } else {
+    toDoArray[index].checklist = false;
+    console.log(toDoArray);
+  }
+};
+
 export default addToDo;
 export {
   getTodoDescription,
   getTodoDate,
   removeTodo,
   changeTodoDate,
+  checkStatus,
   toDoArray,
 };

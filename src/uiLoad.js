@@ -2,6 +2,7 @@ import addToDo, {
   getTodoDate,
   getTodoDescription,
   removeTodo,
+  checkStatus,
   toDoArray,
 } from "./toDo";
 import iconOne from "./circle-regular.svg";
@@ -94,6 +95,63 @@ const toDoLoad = function () {
   addToDo(input);
 };
 
+const renderTodos = function () {
+  const taskList = document.querySelector(".tasks-list");
+
+  removeAllChildNodes(taskList);
+
+  for (let i = 0; i < toDoArray.length; i++) {
+    const task = document.createElement("div");
+    task.classList.add("task-container");
+    task.dataset.indexNumber = toDoArray.indexOf(toDoArray[i]);
+
+    const taskContent = document.createElement("p");
+    taskContent.classList.add("task-content");
+    taskContent.textContent = getTodoDescription(i);
+
+    const checkIcon = new Image();
+    checkIcon.src = iconOne;
+    checkIcon.classList.add("fa-circle");
+    checkIcon.addEventListener("click", () => {
+      checkStatus(i);
+      renderTodos();
+    });
+
+    const date = document.createElement("p");
+    date.classList.add("date");
+    date.textContent = getTodoDate(i);
+
+    const deleteIcon = new Image();
+    deleteIcon.src = iconTwo;
+    deleteIcon.classList.add("fa-xmark");
+    deleteIcon.addEventListener("click", () => {
+      removeTodo(i);
+      renderTodos();
+    });
+
+    if (toDoArray[i].checklist == false) {
+      task.classList.remove("strike");
+    } else {
+      task.classList.add("strike");
+    }
+
+    task.appendChild(checkIcon);
+    task.appendChild(taskContent);
+    task.appendChild(date);
+    task.appendChild(deleteIcon);
+
+    taskList.appendChild(task);
+
+    //return taskList;
+  }
+};
+
+function removeAllChildNodes(parent) {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  }
+}
+
 const uiLoad = function () {
   defaultLoad();
 
@@ -119,52 +177,5 @@ const uiLoad = function () {
     weekLoad();
   });
 };
-
-const renderTodos = function () {
-  const taskList = document.querySelector(".tasks-list");
-
-  removeAllChildNodes(taskList);
-
-  for (let i = 0; i < toDoArray.length; i++) {
-    const task = document.createElement("div");
-    task.classList.add("task-container");
-    task.dataset.indexNumber = toDoArray.indexOf(toDoArray[i]);
-
-    const taskContent = document.createElement("p");
-    taskContent.classList.add("task-content");
-    taskContent.textContent = getTodoDescription(i);
-
-    const checkIcon = new Image();
-    checkIcon.src = iconOne;
-    checkIcon.classList.add("fa-circle");
-
-    const date = document.createElement("p");
-    date.classList.add("date");
-    date.textContent = getTodoDate(i);
-
-    const deleteIcon = new Image();
-    deleteIcon.src = iconTwo;
-    deleteIcon.classList.add("fa-xmark");
-    deleteIcon.addEventListener("click", () => {
-      removeTodo(i);
-      renderTodos();
-    });
-
-    task.appendChild(checkIcon);
-    task.appendChild(taskContent);
-    task.appendChild(date);
-    task.appendChild(deleteIcon);
-
-    taskList.appendChild(task);
-
-    //return taskList;
-  }
-};
-
-function removeAllChildNodes(parent) {
-  while (parent.firstChild) {
-    parent.removeChild(parent.firstChild);
-  }
-}
 
 export { uiLoad };
