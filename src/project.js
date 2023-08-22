@@ -52,6 +52,10 @@ const addProjects = function (projectName) {
   return myProject;
 };
 
+const getProjectDescription = (index) => {
+  return projectsArray[index].projectName;
+};
+
 const getProject = (index) => {
   return projectsArray[index];
 };
@@ -59,4 +63,13 @@ const getProject = (index) => {
 const removeProject = (index) => {
   projectsArray.splice(index, 1);
   console.log(projectsArray);
+};
+
+export default addProjects;
+export {
+  projectsArray,
+  projectTodo,
+  addProjects,
+  getProjectDescription,
+  removeProject,
 };
