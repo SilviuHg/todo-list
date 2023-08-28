@@ -93,3 +93,15 @@ button {
 .strike {
   text-decoration: line-through;
 }
+
+.date.active {
+  display: none;
+}
+
+.input-date {
+  display: none;
+}
+
+.input-date.active {
+  display: block;
+}

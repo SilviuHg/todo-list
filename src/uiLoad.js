@@ -4,6 +4,7 @@ import addToDo, {
   removeTodo,
   checkStatus,
   toDoArray,
+  changeTodoDate,
 } from "./toDo";
 import addProjects, {
   projectsArray,
@@ -130,9 +131,20 @@ const renderTodos = function () {
       renderTodos();
     });
 
+    const dateInput = document.createElement("input");
+    dateInput.setAttribute("type", "date");
+    dateInput.classList.add("input-date");
+    dateInput.addEventListener("click", () => {
+      changeTodoDate(i, dateInput.value);
+      renderTodos();
+    });
+
     const date = document.createElement("p");
     date.classList.add("date");
     date.textContent = getTodoDate(i);
+    date.addEventListener("click", () => {
+      toggleDate(task);
+    });
 
     const deleteIcon = new Image();
     deleteIcon.src = iconTwo;
@@ -151,11 +163,10 @@ const renderTodos = function () {
     task.appendChild(checkIcon);
     task.appendChild(taskContent);
     task.appendChild(date);
+    task.appendChild(dateInput);
     task.appendChild(deleteIcon);
 
     taskList.appendChild(task);
-
-    //return taskList;
   }
 };
 
@@ -181,8 +192,11 @@ const renderProjects = function () {
     projectContent.classList.add("project-content");
     projectContent.textContent = getProjectDescription(i);
     projectContent.addEventListener("click", () => {
-      // console.log("clicked");
+      uiLoad.currentProject = project.dataset.indexNumber;
       projectLoad();
+      renderProjectTodos();
+
+      console.log(uiLoad.currentProject);
     });
 
     const deleteIcon = new Image();
@@ -206,7 +220,7 @@ const projectLoad = function () {
 
   const projectTitle = document.createElement("h1");
   projectTitle.classList.add("title-name");
-  projectTitle.textContent = "Inbox";
+  projectTitle.textContent = getProjectDescription(uiLoad.currentProject);
 
   const projectTasksList = document.createElement("div");
   projectTasksList.classList.add("tasks-list");
@@ -244,7 +258,9 @@ const projectLoad = function () {
   content.appendChild(projectTaskPopUp);
 
   addProjectTodoButton.addEventListener("click", () => {
-    console.log("added");
+    projectToDoLoad();
+    renderProjectTodos();
+    console.log(projectsArray);
   });
 
   return content;
@@ -252,13 +268,73 @@ const projectLoad = function () {
 
 const projectToDoLoad = function () {
   const input = document.querySelector(".input-popup").value;
+  projectsArray[uiLoad.currentProject].addProjectTodo(
+    input,
+    uiLoad.currentProject
+  );
 };
 
-const renderProjectTodos = function () {};
+const renderProjectTodos = function () {
+  const taskList = document.querySelector(".tasks-list");
+
+  removeAllChildNodes(taskList);
+
+  for (
+    let i = 0;
+    i < projectsArray[uiLoad.currentProject].toDoArray.length;
+    i++
+  ) {
+    const task = document.createElement("div");
+    task.classList.add("task-container");
+    task.dataset.indexNumber = projectsArray[
+      uiLoad.currentProject
+    ].toDoArray.indexOf(projectsArray[uiLoad.currentProject].toDoArray[i]);
+
+    const taskContent = document.createElement("p");
+    taskContent.classList.add("task-content");
+    taskContent.textContent =
+      projectsArray[uiLoad.currentProject].getProjectTodoDescription(i);
+
+    const checkIcon = new Image();
+    checkIcon.src = iconOne;
+    checkIcon.classList.add("fa-circle");
+    checkIcon.addEventListener("click", () => {
+      projectsArray[uiLoad.currentProject].checkStatus(i);
+      renderProjectTodos();
+    });
+
+    const date = document.createElement("p");
+    date.classList.add("date");
+    date.textContent =
+      projectsArray[uiLoad.currentProject].getProjectTodoDate(i);
+
+    const deleteIcon = new Image();
+    deleteIcon.src = iconTwo;
+    deleteIcon.classList.add("fa-xmark");
+    deleteIcon.addEventListener("click", () => {
+      projectsArray[uiLoad.currentProject].removeProjectTodo(i);
+      renderProjectTodos();
+    });
+
+    if (projectsArray[uiLoad.currentProject].toDoArray[i].checklist == false) {
+      task.classList.remove("strike");
+    } else {
+      task.classList.add("strike");
+    }
+
+    task.appendChild(checkIcon);
+    task.appendChild(taskContent);
+    task.appendChild(date);
+    task.appendChild(deleteIcon);
+
+    taskList.appendChild(task);
+  }
+};
 
 // interface load
 
 const uiLoad = function () {
+  let currentProject;
   defaultLoad();
 
   const inboxButton = document.querySelector("#button-inbox");
@@ -287,5 +363,21 @@ const uiLoad = function () {
     renderProjects();
   });
 };
+
+//const toggleClass = function () {
+//  const dateInput = document.querySelector(".input-date");
+//  dateInput.classList.toggle("input-date.active");
+
+//  const date = document.querySelector(".date");
+//  date.classList.toggle("date.active");
+//};
+
+function toggleDate(taskButton) {
+  const dueDate = taskButton.children[2];
+  const dueDateInput = taskButton.children[3];
+
+  dueDate.classList.add("active");
+  dueDateInput.classList.add("active");
+}
 
 export { uiLoad };

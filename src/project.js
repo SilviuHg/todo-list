@@ -17,8 +17,9 @@ const project = (projectName) => {
     return myToDo;
   };
 
-  const getProjectTodoInfo = (todoIndex) => {
-    console.log(toDoArray[todoIndex]);
+  const getProjectTodoDescription = (todoIndex) => {
+    //console.log(toDoArray[todoIndex]);
+    return toDoArray[todoIndex].description;
   };
 
   const removeProjectTodo = (todoIndex) => {
@@ -32,13 +33,29 @@ const project = (projectName) => {
     console.log(projectsArray);
   };
 
+  const getProjectTodoDate = (index) => {
+    return toDoArray[index].dueDate;
+  };
+
+  const checkStatus = (index) => {
+    if (toDoArray[index].checklist == false) {
+      toDoArray[index].checklist = true;
+      console.log(toDoArray);
+    } else {
+      toDoArray[index].checklist = false;
+      console.log(toDoArray);
+    }
+  };
+
   return {
     projectName,
     toDoArray,
     addProjectTodo,
-    getProjectTodoInfo,
+    getProjectTodoDescription,
     removeProjectTodo,
     changeProjectTodoDate,
+    checkStatus,
+    getProjectTodoDate,
   };
 };
 
