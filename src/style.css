@@ -72,6 +72,10 @@ button {
   height: 20px;
 }
 
+.task-popup {
+  display: none;
+}
+
 .task-container,
 .project-container {
   display: flex;

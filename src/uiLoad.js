@@ -13,6 +13,7 @@ import addProjects, {
 } from "./project";
 import iconOne from "./circle-regular.svg";
 import iconTwo from "./xmark-solid.svg";
+import { format } from "date-fns";
 
 const defaultLoad = function () {
   const content = document.querySelector(".content");
@@ -61,6 +62,14 @@ const defaultLoad = function () {
     renderTodos();
   });
 
+  addTask.addEventListener("click", () => {
+    if (taskPopUp.style.display === "" || taskPopUp.style.display === "none") {
+      taskPopUp.style.display = "block";
+    } else {
+      taskPopUp.style.display = "none";
+    }
+  });
+
   return content;
 };
 
@@ -76,6 +85,8 @@ const todayLoad = function () {
 
   content.appendChild(title);
   content.appendChild(tasksList);
+
+  checkTodayTodo();
 
   return content;
 };
@@ -134,8 +145,9 @@ const renderTodos = function () {
     const dateInput = document.createElement("input");
     dateInput.setAttribute("type", "date");
     dateInput.classList.add("input-date");
-    dateInput.addEventListener("click", () => {
-      changeTodoDate(i, dateInput.value);
+    dateInput.addEventListener("input", () => {
+      const formattedDate = format(new Date(dateInput.value), "dd-MMM-yyyy");
+      changeTodoDate(i, formattedDate);
       renderTodos();
     });
 
@@ -263,6 +275,16 @@ const projectLoad = function () {
     console.log(projectsArray);
   });
 
+  addProjectTask.addEventListener("click", () => {
+    if (
+      projectTaskPopUp.style.display === "" ||
+      projectTaskPopUp.style.display === "none"
+    ) {
+      projectTaskPopUp.style.display = "block";
+    } else {
+      projectTaskPopUp.style.display = "none";
+    }
+  });
   return content;
 };
 
@@ -303,10 +325,26 @@ const renderProjectTodos = function () {
       renderProjectTodos();
     });
 
+    const dateInput = document.createElement("input");
+    dateInput.setAttribute("type", "date");
+    dateInput.classList.add("input-date");
+    dateInput.addEventListener("input", () => {
+      const formattedDate = format(new Date(dateInput.value), "dd-MMM-yyyy");
+
+      projectsArray[uiLoad.currentProject].changeProjectTodoDate(
+        i,
+        formattedDate
+      );
+      renderProjectTodos();
+    });
+
     const date = document.createElement("p");
     date.classList.add("date");
     date.textContent =
       projectsArray[uiLoad.currentProject].getProjectTodoDate(i);
+    date.addEventListener("click", () => {
+      toggleDate(task);
+    });
 
     const deleteIcon = new Image();
     deleteIcon.src = iconTwo;
@@ -325,9 +363,24 @@ const renderProjectTodos = function () {
     task.appendChild(checkIcon);
     task.appendChild(taskContent);
     task.appendChild(date);
+    task.appendChild(dateInput);
     task.appendChild(deleteIcon);
 
     taskList.appendChild(task);
+  }
+};
+
+// check today's todo's
+
+const checkTodayTodo = function () {
+  const currentDate = format(new Date(), "dd-MMM-yyyy");
+
+  for (let i = 0; i < toDoArray.length; i++) {
+    if (toDoArray[i].dueDate === currentDate) {
+      console.log("true");
+    } else {
+      console.log("false");
+    }
   }
 };
 
@@ -363,14 +416,6 @@ const uiLoad = function () {
     renderProjects();
   });
 };
-
-//const toggleClass = function () {
-//  const dateInput = document.querySelector(".input-date");
-//  dateInput.classList.toggle("input-date.active");
-
-//  const date = document.querySelector(".date");
-//  date.classList.toggle("date.active");
-//};
 
 function toggleDate(taskButton) {
   const dueDate = taskButton.children[2];
