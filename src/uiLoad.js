@@ -373,16 +373,78 @@ const renderProjectTodos = function () {
 // check today's todo's
 
 const checkTodayTodo = function () {
-  const currentDate = format(new Date(), "dd-MMM-yyyy");
+  const taskList = document.querySelector(".tasks-list");
+  const resultArray = toDoArray.filter(filterByDate);
 
-  for (let i = 0; i < toDoArray.length; i++) {
-    if (toDoArray[i].dueDate === currentDate) {
-      console.log("true");
+  console.log(resultArray);
+
+  removeAllChildNodes(taskList);
+
+  for (let i = 0; i < resultArray.length; i++) {
+    const task = document.createElement("div");
+    task.classList.add("task-container");
+    task.dataset.indexNumber = resultArray.indexOf(resultArray[i]);
+
+    const taskContent = document.createElement("p");
+    taskContent.classList.add("task-content");
+    taskContent.textContent = getTodoDescription(i);
+
+    const checkIcon = new Image();
+    checkIcon.src = iconOne;
+    checkIcon.classList.add("fa-circle");
+    checkIcon.addEventListener("click", () => {
+      checkStatus(i);
+      checkTodayTodo();
+    });
+
+    const dateInput = document.createElement("input");
+    dateInput.setAttribute("type", "date");
+    dateInput.classList.add("input-date");
+    dateInput.addEventListener("input", () => {
+      const formattedDate = format(new Date(dateInput.value), "dd-MMM-yyyy");
+      changeTodoDate(i, formattedDate);
+      checkTodayTodo();
+    });
+
+    const date = document.createElement("p");
+    date.classList.add("date");
+    date.textContent = getTodoDate(i);
+    date.addEventListener("click", () => {
+      toggleDate(task);
+    });
+
+    const deleteIcon = new Image();
+    deleteIcon.src = iconTwo;
+    deleteIcon.classList.add("fa-xmark");
+    deleteIcon.addEventListener("click", () => {
+      removeTodo(i);
+      checkTodayTodo();
+    });
+
+    if (resultArray[i].checklist == false) {
+      task.classList.remove("strike");
     } else {
-      console.log("false");
+      task.classList.add("strike");
     }
+
+    task.appendChild(checkIcon);
+    task.appendChild(taskContent);
+    task.appendChild(date);
+    task.appendChild(dateInput);
+    task.appendChild(deleteIcon);
+
+    taskList.appendChild(task);
   }
 };
+
+function filterByDate(item) {
+  const currentDate = format(new Date(), "dd-MMM-yyyy");
+
+  if (item.dueDate === currentDate) {
+    return true;
+  }
+  return false;
+}
 
 // interface load
 
