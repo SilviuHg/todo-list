@@ -11,6 +11,7 @@ import addProjects, {
   getProjectDescription,
   removeProject,
 } from "./project";
+import { setTodo, checkToDo, setProjects, checkProjects } from "./storage";
 import iconOne from "./circle-regular.svg";
 import iconTwo from "./xmark-solid.svg";
 import { format } from "date-fns";
@@ -73,45 +74,12 @@ const defaultLoad = function () {
   return content;
 };
 
-const todayLoad = function () {
-  const content = document.querySelector(".content");
-
-  const title = document.createElement("h1");
-  title.classList.add("title-name");
-  title.textContent = "Today";
-
-  const tasksList = document.createElement("div");
-  tasksList.classList.add("tasks-list");
-
-  content.appendChild(title);
-  content.appendChild(tasksList);
-
-  checkTodayTodo();
-
-  return content;
-};
-
-const weekLoad = function () {
-  const content = document.querySelector(".content");
-
-  const title = document.createElement("h1");
-  title.classList.add("title-name");
-  title.textContent = "This week";
-
-  const tasksList = document.createElement("div");
-  tasksList.classList.add("tasks-list");
-
-  content.appendChild(title);
-  content.appendChild(tasksList);
-
-  return content;
-};
-
 // todos functionality
 
 const toDoLoad = function () {
   const input = document.querySelector(".input-popup").value;
   addToDo(input);
+  setTodo(toDoArray);
 };
 
 function removeAllChildNodes(parent) {
@@ -139,6 +107,7 @@ const renderTodos = function () {
     checkIcon.classList.add("fa-circle");
     checkIcon.addEventListener("click", () => {
       checkStatus(i);
+      setTodo(toDoArray);
       renderTodos();
     });
 
@@ -148,6 +117,7 @@ const renderTodos = function () {
     dateInput.addEventListener("input", () => {
       const formattedDate = format(new Date(dateInput.value), "dd-MMM-yyyy");
       changeTodoDate(i, formattedDate);
+      setTodo(toDoArray);
       renderTodos();
     });
 
@@ -163,6 +133,7 @@ const renderTodos = function () {
     deleteIcon.classList.add("fa-xmark");
     deleteIcon.addEventListener("click", () => {
       removeTodo(i);
+      setTodo(toDoArray);
       renderTodos();
     });
 
@@ -370,107 +341,31 @@ const renderProjectTodos = function () {
   }
 };
 
-// check today's todo's
+// interface load
 
-const checkTodayTodo = function () {
-  const taskList = document.querySelector(".tasks-list");
-  const resultArray = toDoArray.filter(filterByDate);
-
-  console.log(resultArray);
-
-  removeAllChildNodes(taskList);
-
-  for (let i = 0; i < resultArray.length; i++) {
-    const task = document.createElement("div");
-    task.classList.add("task-container");
-    task.dataset.indexNumber = resultArray.indexOf(resultArray[i]);
-
-    const taskContent = document.createElement("p");
-    taskContent.classList.add("task-content");
-    taskContent.textContent = getTodoDescription(i);
-
-    const checkIcon = new Image();
-    checkIcon.src = iconOne;
-    checkIcon.classList.add("fa-circle");
-    checkIcon.addEventListener("click", () => {
-      checkStatus(i);
-      checkTodayTodo();
-    });
-
-    const dateInput = document.createElement("input");
-    dateInput.setAttribute("type", "date");
-    dateInput.classList.add("input-date");
-    dateInput.addEventListener("input", () => {
-      const formattedDate = format(new Date(dateInput.value), "dd-MMM-yyyy");
-      changeTodoDate(i, formattedDate);
-      checkTodayTodo();
-    });
-
-    const date = document.createElement("p");
-    date.classList.add("date");
-    date.textContent = getTodoDate(i);
-    date.addEventListener("click", () => {
-      toggleDate(task);
-    });
-
-    const deleteIcon = new Image();
-    deleteIcon.src = iconTwo;
-    deleteIcon.classList.add("fa-xmark");
-    deleteIcon.addEventListener("click", () => {
-      removeTodo(i);
-      checkTodayTodo();
-    });
-
-    if (resultArray[i].checklist == false) {
-      task.classList.remove("strike");
-    } else {
-      task.classList.add("strike");
-    }
-
-    task.appendChild(checkIcon);
-    task.appendChild(taskContent);
-    task.appendChild(date);
-    task.appendChild(dateInput);
-    task.appendChild(deleteIcon);
-
-    taskList.appendChild(task);
+const checkToDoStorage = function () {
+  if (!localStorage.getItem("todo-array")) {
+    return;
+  } else {
+    toDoArray.push(checkToDo(toDoArray));
+    renderTodos();
   }
 };
-
-function filterByDate(item) {
-  const currentDate = format(new Date(), "dd-MMM-yyyy");
-
-  if (item.dueDate === currentDate) {
-    return true;
-  }
-  return false;
-}
-
-// interface load
 
 const uiLoad = function () {
   let currentProject;
   defaultLoad();
+  checkToDoStorage();
+  //checkProjects(projectsArray)
+  //renderProjects
 
   const inboxButton = document.querySelector("#button-inbox");
-  const todayButton = document.querySelector("#button-today");
-  const weekButton = document.querySelector("#button-week");
   const addProjectButton = document.querySelector(".add-project-popup");
 
   inboxButton.addEventListener("click", () => {
     document.querySelector(".content").textContent = "";
     defaultLoad();
     renderTodos();
-  });
-
-  todayButton.addEventListener("click", () => {
-    document.querySelector(".content").textContent = "";
-    todayLoad();
-  });
-
-  weekButton.addEventListener("click", () => {
-    document.querySelector(".content").textContent = "";
-    weekLoad();
   });
 
   addProjectButton.addEventListener("click", () => {
