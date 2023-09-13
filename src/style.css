@@ -76,6 +76,10 @@ button {
   display: none;
 }
 
+.project-popup {
+  display: none;
+}
+
 .task-container,
 .project-container {
   display: flex;

@@ -45,6 +45,7 @@ const checkStatus = (index) => {
 
 export default addToDo;
 export {
+  toDo,
   getTodoDescription,
   getTodoDate,
   removeTodo,

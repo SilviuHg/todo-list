@@ -85,6 +85,7 @@ const removeProject = (index) => {
 export default addProjects;
 export {
   projectsArray,
+  project,
   projectTodo,
   addProjects,
   getProjectDescription,

@@ -11,7 +11,13 @@ import addProjects, {
   getProjectDescription,
   removeProject,
 } from "./project";
-import { setTodo, checkToDo, setProjects, checkProjects } from "./storage";
+import {
+  setTodo,
+  checkToDo,
+  setProjects,
+  checkProjects,
+  checkProjectsTodo,
+} from "./storage";
 import iconOne from "./circle-regular.svg";
 import iconTwo from "./xmark-solid.svg";
 import { format } from "date-fns";
@@ -158,6 +164,7 @@ const renderTodos = function () {
 const createProject = function () {
   const input = document.querySelector(".project-input-popup").value;
   addProjects(input);
+  setProjects(projectsArray);
   console.log(projectsArray);
 };
 
@@ -177,6 +184,7 @@ const renderProjects = function () {
     projectContent.addEventListener("click", () => {
       uiLoad.currentProject = project.dataset.indexNumber;
       projectLoad();
+      checkProjectTodoStorage();
       renderProjectTodos();
 
       console.log(uiLoad.currentProject);
@@ -187,6 +195,7 @@ const renderProjects = function () {
     deleteIcon.classList.add("fa-xmark");
     deleteIcon.addEventListener("click", () => {
       removeProject(i);
+      setProjects(projectsArray);
       renderProjects();
     });
 
@@ -265,6 +274,7 @@ const projectToDoLoad = function () {
     input,
     uiLoad.currentProject
   );
+  setProjects(projectsArray);
 };
 
 const renderProjectTodos = function () {
@@ -293,6 +303,7 @@ const renderProjectTodos = function () {
     checkIcon.classList.add("fa-circle");
     checkIcon.addEventListener("click", () => {
       projectsArray[uiLoad.currentProject].checkStatus(i);
+      setProjects(projectsArray);
       renderProjectTodos();
     });
 
@@ -306,6 +317,7 @@ const renderProjectTodos = function () {
         i,
         formattedDate
       );
+      setProjects(projectsArray);
       renderProjectTodos();
     });
 
@@ -322,6 +334,7 @@ const renderProjectTodos = function () {
     deleteIcon.classList.add("fa-xmark");
     deleteIcon.addEventListener("click", () => {
       projectsArray[uiLoad.currentProject].removeProjectTodo(i);
+      setProjects(projectsArray);
       renderProjectTodos();
     });
 
@@ -347,8 +360,31 @@ const checkToDoStorage = function () {
   if (!localStorage.getItem("todo-array")) {
     return;
   } else {
-    toDoArray.push(checkToDo(toDoArray));
+    toDoArray.push(...checkToDo());
+    console.log(toDoArray);
     renderTodos();
+  }
+};
+
+const checkProjectStorage = function () {
+  if (!localStorage.getItem("projects-array")) {
+    return;
+  } else {
+    projectsArray.push(...checkProjects());
+    console.log(projectsArray);
+    renderProjects();
+  }
+};
+
+const checkProjectTodoStorage = function () {
+  if (!localStorage.getItem("projects-array")) {
+    return;
+  } else {
+    projectsArray[uiLoad.currentProject].toDoArray.push(
+      ...checkProjectsTodo(uiLoad.currentProject)
+    );
+    console.log(projectsArray);
+    // renderProjects();
   }
 };
 
@@ -356,11 +392,12 @@ const uiLoad = function () {
   let currentProject;
   defaultLoad();
   checkToDoStorage();
-  //checkProjects(projectsArray)
-  //renderProjects
+  checkProjectStorage();
 
   const inboxButton = document.querySelector("#button-inbox");
   const addProjectButton = document.querySelector(".add-project-popup");
+  const customProject = document.querySelector(".custom-project");
+  const projectPopUp = document.querySelector(".project-popup");
 
   inboxButton.addEventListener("click", () => {
     document.querySelector(".content").textContent = "";
@@ -371,6 +408,17 @@ const uiLoad = function () {
   addProjectButton.addEventListener("click", () => {
     createProject();
     renderProjects();
+  });
+
+  customProject.addEventListener("click", () => {
+    if (
+      projectPopUp.style.display === "" ||
+      projectPopUp.style.display === "none"
+    ) {
+      projectPopUp.style.display = "block";
+    } else {
+      projectPopUp.style.display = "none";
+    }
   });
 };
 
