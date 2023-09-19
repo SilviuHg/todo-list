@@ -17,6 +17,8 @@ import {
   setProjects,
   checkProjects,
   checkProjectsTodo,
+  checkProjectsTodoTwo,
+  loadProjectsFromLocalStorage,
 } from "./storage";
 import iconOne from "./circle-regular.svg";
 import iconTwo from "./xmark-solid.svg";
@@ -196,6 +198,7 @@ const renderProjects = function () {
     deleteIcon.addEventListener("click", () => {
       removeProject(i);
       setProjects(projectsArray);
+      document.querySelector(".content").textContent = "";
       renderProjects();
     });
 
@@ -354,7 +357,7 @@ const renderProjectTodos = function () {
   }
 };
 
-// interface load
+// storage check
 
 const checkToDoStorage = function () {
   if (!localStorage.getItem("todo-array")) {
@@ -384,9 +387,10 @@ const checkProjectTodoStorage = function () {
       ...checkProjectsTodo(uiLoad.currentProject)
     );
     console.log(projectsArray);
-    // renderProjects();
   }
 };
+
+// interface load
 
 const uiLoad = function () {
   let currentProject;

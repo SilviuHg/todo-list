@@ -1,8 +1,8 @@
 import { toDo } from "./toDo";
-import { project, projectTodo } from "./project";
+import { project, projectTodo, addProjects } from "./project";
 let storedTodoArray = [];
 let storedProjectsArray = [];
-let storedProjectsTodos = [];
+//let storedProjectsTodos = [];
 
 // store todo's
 
@@ -45,6 +45,7 @@ const checkProjects = () => {
 
 // added at renderProjects
 const checkProjectsTodo = (currentProject) => {
+  let storedProjectsTodos = [];
   const array = JSON.parse(localStorage.getItem("projects-array"));
   for (let i = 0; i < array[currentProject].toDoArray.length; i++) {
     const myTodo = projectTodo(
@@ -57,4 +58,27 @@ const checkProjectsTodo = (currentProject) => {
   return storedProjectsTodos;
 };
 
-export { setTodo, checkToDo, setProjects, checkProjects, checkProjectsTodo };
+const checkProjectsTodoTwo = () => {
+  let storedProjectsTodos = [];
+  const array = JSON.parse(localStorage.getItem("projects-array"));
+  array.forEach((element) => {
+    element.toDoArray.forEach((index) => {
+      const myTodo = projectTodo(
+        index.description,
+        index.checklist,
+        index.dueDate
+      );
+      storedProjectsTodos.push(myTodo);
+    });
+    return storedProjectsTodos;
+  });
+};
+
+export {
+  setTodo,
+  checkToDo,
+  setProjects,
+  checkProjects,
+  checkProjectsTodo,
+  checkProjectsTodoTwo,
+};

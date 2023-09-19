@@ -17,6 +17,10 @@ const project = (projectName) => {
     return myToDo;
   };
 
+  const getProjectIndex = (projectId) => {
+    return projectId;
+  };
+
   const getProjectTodoDescription = (todoIndex) => {
     //console.log(toDoArray[todoIndex]);
     return toDoArray[todoIndex].description;
@@ -56,11 +60,12 @@ const project = (projectName) => {
     changeProjectTodoDate,
     checkStatus,
     getProjectTodoDate,
+    getProjectIndex,
   };
 };
 
-const projectTodo = (description, checklist, dueDate) => {
-  return { description, checklist, dueDate };
+const projectTodo = (description, checklist, dueDate, projectId) => {
+  return { description, checklist, dueDate, projectId };
 };
 
 const addProjects = function (projectName) {
