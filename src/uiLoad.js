@@ -7,6 +7,7 @@ import addToDo, {
   changeTodoDate,
 } from "./toDo";
 import addProjects, {
+  projectTodo,
   projectsArray,
   getProjectDescription,
   removeProject,
@@ -17,8 +18,7 @@ import {
   setProjects,
   checkProjects,
   checkProjectsTodo,
-  checkProjectsTodoTwo,
-  loadProjectsFromLocalStorage,
+  placeTodosInProjects,
 } from "./storage";
 import iconOne from "./circle-regular.svg";
 import iconTwo from "./xmark-solid.svg";
@@ -165,9 +165,18 @@ const renderTodos = function () {
 
 const createProject = function () {
   const input = document.querySelector(".project-input-popup").value;
-  addProjects(input);
-  setProjects(projectsArray);
-  console.log(projectsArray);
+
+  const isProjectNameTaken = projectsArray.some((project) => {
+    return project.projectName === input;
+  });
+
+  if (isProjectNameTaken) {
+    alert("Projects names must be different");
+  } else {
+    addProjects(input);
+    setProjects(projectsArray);
+    console.log(projectsArray);
+  }
 };
 
 const renderProjects = function () {
@@ -186,7 +195,6 @@ const renderProjects = function () {
     projectContent.addEventListener("click", () => {
       uiLoad.currentProject = project.dataset.indexNumber;
       projectLoad();
-      checkProjectTodoStorage();
       renderProjectTodos();
 
       console.log(uiLoad.currentProject);
@@ -379,14 +387,11 @@ const checkProjectStorage = function () {
   }
 };
 
-const checkProjectTodoStorage = function () {
+const checkProjectToDoStorage = function () {
   if (!localStorage.getItem("projects-array")) {
     return;
   } else {
-    projectsArray[uiLoad.currentProject].toDoArray.push(
-      ...checkProjectsTodo(uiLoad.currentProject)
-    );
-    console.log(projectsArray);
+    placeTodosInProjects(projectsArray, checkProjectsTodo());
   }
 };
 
@@ -397,6 +402,7 @@ const uiLoad = function () {
   defaultLoad();
   checkToDoStorage();
   checkProjectStorage();
+  checkProjectToDoStorage();
 
   const inboxButton = document.querySelector("#button-inbox");
   const addProjectButton = document.querySelector(".add-project-popup");

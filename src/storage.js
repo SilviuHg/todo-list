@@ -1,8 +1,7 @@
 import { toDo } from "./toDo";
-import { project, projectTodo, addProjects } from "./project";
+import { project, projectTodo } from "./project";
 let storedTodoArray = [];
 let storedProjectsArray = [];
-//let storedProjectsTodos = [];
 
 // store todo's
 
@@ -43,34 +42,40 @@ const checkProjects = () => {
   return storedProjectsArray;
 };
 
-// added at renderProjects
-const checkProjectsTodo = (currentProject) => {
+// added at uiLoad
+const checkProjectsTodo = () => {
   let storedProjectsTodos = [];
   const array = JSON.parse(localStorage.getItem("projects-array"));
-  for (let i = 0; i < array[currentProject].toDoArray.length; i++) {
-    const myTodo = projectTodo(
-      array[currentProject].toDoArray[i].description,
-      array[currentProject].toDoArray[i].checklist,
-      array[currentProject].toDoArray[i].dueDate
-    );
-    storedProjectsTodos.push(myTodo);
-  }
-  return storedProjectsTodos;
-};
-
-const checkProjectsTodoTwo = () => {
-  let storedProjectsTodos = [];
-  const array = JSON.parse(localStorage.getItem("projects-array"));
-  array.forEach((element) => {
-    element.toDoArray.forEach((index) => {
+  array.forEach((project) => {
+    project.toDoArray.forEach((index) => {
       const myTodo = projectTodo(
         index.description,
         index.checklist,
-        index.dueDate
+        index.dueDate,
+        project.projectName
       );
       storedProjectsTodos.push(myTodo);
     });
-    return storedProjectsTodos;
+  });
+  return storedProjectsTodos;
+};
+
+const placeTodosInProjects = (projectsArray, todosArray) => {
+  todosArray.forEach((todoWithProjectId) => {
+    const { projectId } = todoWithProjectId;
+
+    // Find the project in projectsArray that matches the projectId
+    const project = projectsArray.find(
+      (project) => project.projectName === projectId
+    );
+
+    if (project) {
+      // Directly push the todo into the project's toDoArray
+      project.toDoArray.push(todoWithProjectId);
+    } else {
+      // Handle the case where the project with the given projectId was not found
+      console.error(`Project with ID '${projectId}' not found.`);
+    }
   });
 };
 
@@ -80,5 +85,5 @@ export {
   setProjects,
   checkProjects,
   checkProjectsTodo,
-  checkProjectsTodoTwo,
+  placeTodosInProjects,
 };

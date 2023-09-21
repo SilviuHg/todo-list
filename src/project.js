@@ -10,15 +10,16 @@ const project = (projectName) => {
   }
 
   const addProjectTodo = function (description, index) {
-    const myToDo = projectTodo(description, false, "No date");
+    const myToDo = projectTodo(
+      description,
+      false,
+      "No date",
+      getProjectDescription(index)
+    );
 
     addToProjects(myToDo, index);
 
     return myToDo;
-  };
-
-  const getProjectIndex = (projectId) => {
-    return projectId;
   };
 
   const getProjectTodoDescription = (todoIndex) => {
@@ -60,7 +61,7 @@ const project = (projectName) => {
     changeProjectTodoDate,
     checkStatus,
     getProjectTodoDate,
-    getProjectIndex,
+    //   getProjectIndex,
   };
 };
 
