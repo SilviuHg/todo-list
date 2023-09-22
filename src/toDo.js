@@ -6,12 +6,16 @@ let toDoArray = [];
 
 // creating a toDo object
 const addToDo = function (description) {
-  const myToDo = toDo(description, false, "No date");
+  if (description === "" || description === undefined) {
+    alert("Task name can't be empty");
+  } else {
+    const myToDo = toDo(description, false, "No date");
 
-  toDoArray.push(myToDo);
-  console.log(toDoArray);
+    toDoArray.push(myToDo);
+    console.log(toDoArray);
 
-  return myToDo;
+    return myToDo;
+  }
 };
 
 const getTodoDescription = (index) => {

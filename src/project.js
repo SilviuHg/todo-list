@@ -10,16 +10,20 @@ const project = (projectName) => {
   }
 
   const addProjectTodo = function (description, index) {
-    const myToDo = projectTodo(
-      description,
-      false,
-      "No date",
-      getProjectDescription(index)
-    );
+    if (description === "" || description === undefined) {
+      alert("Task name can't be empty");
+    } else {
+      const myToDo = projectTodo(
+        description,
+        false,
+        "No date",
+        getProjectDescription(index)
+      );
 
-    addToProjects(myToDo, index);
+      addToProjects(myToDo, index);
 
-    return myToDo;
+      return myToDo;
+    }
   };
 
   const getProjectTodoDescription = (todoIndex) => {
@@ -61,7 +65,6 @@ const project = (projectName) => {
     changeProjectTodoDate,
     checkStatus,
     getProjectTodoDate,
-    //   getProjectIndex,
   };
 };
 
@@ -70,9 +73,13 @@ const projectTodo = (description, checklist, dueDate, projectId) => {
 };
 
 const addProjects = function (projectName) {
-  const myProject = project(projectName);
-  projectsArray.push(myProject);
-  return myProject;
+  if (projectName === "" || projectName === undefined) {
+    alert("Project name can't be empty");
+  } else {
+    const myProject = project(projectName);
+    projectsArray.push(myProject);
+    return myProject;
+  }
 };
 
 const getProjectDescription = (index) => {

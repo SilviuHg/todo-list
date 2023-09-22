@@ -11,15 +11,33 @@ button {
   cursor: pointer;
 }
 
+button,
+input {
+  border: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  outline: none;
+}
+
+.header {
+  background-color: #6366f1;
+  padding: 15px 0px 15px 15px;
+  color: white;
+  font-family: "Roboto Slab", serif;
+  font-size: 20px;
+}
+
 .main {
   display: grid;
   grid-template-columns: 1fr 4fr;
-  min-height: calc(100vh - 39px);
+  min-height: calc(100vh - 83px);
+  font-family: "Roboto Slab", serif;
 }
 
 .nav {
-  border: 1px solid black;
-  padding: 15px;
+  background-color: #e0e7ff;
+  padding: 20px;
 }
 
 .default-projects {
@@ -36,25 +54,33 @@ button {
   margin: 15px 0px;
 }
 
-.default-list {
+.default-list,
+.custom-project,
+.project-content {
   text-align: left;
+  background-color: #e0e7ff;
 }
 
-.custom-project {
-  text-align: left;
+.custom-project,
+.button-add-task {
+  margin-bottom: 10px;
 }
 
-.content {
-  border: 1px solid black;
-  padding: 20px;
-}
-
-.title-name {
+.project-input-popup,
+.input-popup {
+  padding: 8px;
+  border: 1px solid #94a3b8;
+  border-radius: 10px;
+  width: 100%;
   margin-bottom: 15px;
 }
 
-.input-popup,
-.project-input-popup {
+.content {
+  padding: 20px 40px;
+  background-color: #eef2ff;
+}
+
+.title-name {
   margin-bottom: 15px;
 }
 
@@ -72,8 +98,15 @@ button {
   height: 20px;
 }
 
+.date,
+.fa-circle,
+.fa-xmark {
+  cursor: pointer;
+}
+
 .task-popup {
   display: none;
+  width: 50%;
 }
 
 .project-popup {
@@ -112,4 +145,39 @@ button {
 
 .input-date.active {
   display: block;
+}
+
+h1 {
+  font-weight: 500;
+}
+
+.button-add-task {
+  background-color: #eef2ff;
+  text-align: left;
+  width: 50%;
+}
+
+.default-list:hover,
+.custom-project:hover,
+.project-content:hover,
+.button-add-task:hover {
+  background-color: #c7d2fe;
+  border-radius: 10px;
+}
+
+.default-list:focus,
+.custom-project:focus,
+.project-content:focus,
+.button-add-task:focus {
+  background-color: #c7d2fe;
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+.add-project-popup,
+.add-button-popup {
+  width: 100%;
+  background-color: #6ee7b7;
+  border-radius: 10px;
+  border: 1px solid #94a3b8;
 }

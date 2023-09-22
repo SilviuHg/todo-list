@@ -7,7 +7,6 @@ import addToDo, {
   changeTodoDate,
 } from "./toDo";
 import addProjects, {
-  projectTodo,
   projectsArray,
   getProjectDescription,
   removeProject,
@@ -54,12 +53,7 @@ const defaultLoad = function () {
   addTodoButton.classList.add("add-button-popup");
   addTodoButton.textContent = "Add";
 
-  const cancelButton = document.createElement("button");
-  cancelButton.classList.add("cancel-button-popup");
-  cancelButton.textContent = "Cancel";
-
   taskPopUpButtons.appendChild(addTodoButton);
-  taskPopUpButtons.appendChild(cancelButton);
 
   content.appendChild(title);
   content.appendChild(tasksList);
@@ -248,12 +242,7 @@ const projectLoad = function () {
   addProjectTodoButton.classList.add("add-button-popup");
   addProjectTodoButton.textContent = "Add";
 
-  const cancelProjectTodoButton = document.createElement("button");
-  cancelProjectTodoButton.classList.add("cancel-button-popup");
-  cancelProjectTodoButton.textContent = "Cancel";
-
   projectTaskPopUpButtons.appendChild(addProjectTodoButton);
-  projectTaskPopUpButtons.appendChild(cancelProjectTodoButton);
 
   content.appendChild(projectTitle);
   content.appendChild(projectTasksList);
