@@ -21,6 +21,7 @@ import {
 } from "./storage";
 import iconOne from "./circle-regular.svg";
 import iconTwo from "./xmark-solid.svg";
+import logo from "./list-check-solid.svg";
 import { format } from "date-fns";
 
 const defaultLoad = function () {
@@ -78,12 +79,14 @@ const defaultLoad = function () {
 
 // todos functionality
 
+// add a toDo & save it in localStorage
 const toDoLoad = function () {
   const input = document.querySelector(".input-popup").value;
   addToDo(input);
   setTodo(toDoArray);
 };
 
+// remove all nodes before rendering
 function removeAllChildNodes(parent) {
   while (parent.firstChild) {
     parent.removeChild(parent.firstChild);
@@ -157,6 +160,7 @@ const renderTodos = function () {
 
 // project functionality
 
+// create a project & save it in localStorage
 const createProject = function () {
   const input = document.querySelector(".project-input-popup").value;
 
@@ -173,6 +177,7 @@ const createProject = function () {
   }
 };
 
+// render all projects in the nav section
 const renderProjects = function () {
   const projectsList = document.querySelector(".projects-list");
 
@@ -211,6 +216,7 @@ const renderProjects = function () {
   }
 };
 
+// render a project's contents on the screen
 const projectLoad = function () {
   const content = document.querySelector(".content");
   content.textContent = "";
@@ -268,6 +274,7 @@ const projectLoad = function () {
   return content;
 };
 
+// add a toDo to the associated project's array
 const projectToDoLoad = function () {
   const input = document.querySelector(".input-popup").value;
   projectsArray[uiLoad.currentProject].addProjectTodo(
@@ -356,6 +363,7 @@ const renderProjectTodos = function () {
 
 // storage check
 
+// push toDos from localStorage to toDoArray
 const checkToDoStorage = function () {
   if (!localStorage.getItem("todo-array")) {
     return;
@@ -366,6 +374,7 @@ const checkToDoStorage = function () {
   }
 };
 
+// push projects from localStorage to projectsArray
 const checkProjectStorage = function () {
   if (!localStorage.getItem("projects-array")) {
     return;
@@ -376,6 +385,7 @@ const checkProjectStorage = function () {
   }
 };
 
+// get the project's toDos from localStorage and place them in the associated arrays
 const checkProjectToDoStorage = function () {
   if (!localStorage.getItem("projects-array")) {
     return;
@@ -397,6 +407,13 @@ const uiLoad = function () {
   const addProjectButton = document.querySelector(".add-project-popup");
   const customProject = document.querySelector(".custom-project");
   const projectPopUp = document.querySelector(".project-popup");
+  const headerDiv = document.querySelector(".page-name");
+  const title = document.querySelector(".title");
+  const logoIcon = new Image();
+  logoIcon.src = logo;
+  logoIcon.classList.add("fa-list-check");
+
+  headerDiv.insertBefore(logoIcon, title);
 
   inboxButton.addEventListener("click", () => {
     document.querySelector(".content").textContent = "";
@@ -421,6 +438,7 @@ const uiLoad = function () {
   });
 };
 
+// toggle between dateInput and dateFormatter
 function toggleDate(taskButton) {
   const dueDate = taskButton.children[2];
   const dueDateInput = taskButton.children[3];

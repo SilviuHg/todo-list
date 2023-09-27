@@ -22,10 +22,16 @@ input {
 
 .header {
   background-color: #6366f1;
-  padding: 15px 0px 15px 15px;
+  padding: 15px 0px 15px 20px;
   color: white;
   font-family: "Roboto Slab", serif;
   font-size: 20px;
+}
+
+.page-name {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
 .main {
@@ -88,14 +94,15 @@ input {
   margin-bottom: 15px;
 }
 
-.fa-circle {
+.fa-circle,
+.fa-xmark {
   width: 20px;
   height: 20px;
 }
 
-.fa-xmark {
-  width: 20px;
-  height: 20px;
+.fa-list-check {
+  width: 40px;
+  height: 40px;
 }
 
 .date,

@@ -10,7 +10,7 @@ const setTodo = (array) => {
   localStorage.setItem("todo-array", JSON.stringify(array));
 };
 
-// added at ui load
+// get stored toDos from localStorage
 const checkToDo = () => {
   const array = JSON.parse(localStorage.getItem("todo-array"));
   for (let i = 0; i < array.length; i++) {
@@ -32,7 +32,7 @@ const setProjects = (array) => {
   localStorage.setItem("projects-array", JSON.stringify(array));
 };
 
-// added at ui load
+// get stored projects from localStorage
 const checkProjects = () => {
   const array = JSON.parse(localStorage.getItem("projects-array"));
   for (let i = 0; i < array.length; i++) {
@@ -42,7 +42,7 @@ const checkProjects = () => {
   return storedProjectsArray;
 };
 
-// added at uiLoad
+// get all project's toDos from localStorage into one single array
 const checkProjectsTodo = () => {
   let storedProjectsTodos = [];
   const array = JSON.parse(localStorage.getItem("projects-array"));
@@ -60,6 +60,7 @@ const checkProjectsTodo = () => {
   return storedProjectsTodos;
 };
 
+// place each toDo into it's associated project
 const placeTodosInProjects = (projectsArray, todosArray) => {
   todosArray.forEach((todoWithProjectId) => {
     const { projectId } = todoWithProjectId;

@@ -1,5 +1,6 @@
 let projectsArray = [];
 
+// create a project object with methods to add/edit toDos
 const project = (projectName) => {
   let toDoArray = [];
 
@@ -68,6 +69,7 @@ const project = (projectName) => {
   };
 };
 
+// create a projectTodo
 const projectTodo = (description, checklist, dueDate, projectId) => {
   return { description, checklist, dueDate, projectId };
 };
